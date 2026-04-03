@@ -1,0 +1,20 @@
+services:
+  redis_stack:
+    image: redis/redis-stack:latest
+    container_name: redis_stack_container
+    restart: always
+    environment:
+      REDIS_ARGS: "--requirepass root --appendonly yes"
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a root ping | grep PONG || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis_data:

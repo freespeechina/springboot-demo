@@ -1,0 +1,48 @@
+server:
+  port: 80
+spring:
+  application:
+    name: demo
+  profiles:
+    active: dev
+  # MySQL 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${mysql.username}
+    password: ${mysql.password}
+    hikari:
+      maximum-pool-size: 15
+      connection-timeout: 20000
+  # Redis 配置
+  data:
+    redis:
+      host: ${redis.host}
+      port: ${redis.port}
+      password: ${redis.password}
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 5000ms
+          max-idle: 8
+          min-idle: 1
+  # Spring AI 智谱 AI 配置
+  ai:
+    zhipuai:
+      base-url: https://open.bigmodel.cn/api/paas
+      api-key: ${zhipuai.api-key}
+      chat:
+        options:
+          model: glm-4.7
+    retry:
+      max-attempts: 1
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.demo.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
